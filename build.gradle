@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group = 'me.vadim.archive'
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium-java:4.14.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.jsoup:jsoup:1.16.2'
+    implementation 'org.jetbrains:annotations:24.0.0'
+
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
