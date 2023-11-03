@@ -126,6 +126,16 @@ public class LinkUtil {
 		}
 	}
 
+	public static boolean isDirLink(String link) {
+		URL url = toURL(link);
+
+		if (url == null)
+			return false;
+
+		String[] path = url.getPath().split("/");
+		return (path.length == 0 || !path[path.length - 1].matches("([^./]+\\.[^./]+)+")); // (notpath.notpath)+
+	}
+
 	//@formatter:off
 	// JDK code from java.io.File //
 	public static String slashify(String path, boolean isDirectory) {

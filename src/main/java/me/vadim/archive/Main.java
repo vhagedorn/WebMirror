@@ -58,7 +58,7 @@ public class Main {
 			} catch (IndexOutOfBoundsException | NullPointerException e) {
 				System.err.println("Invalid argument at index " + i + ": " + args[i]);
 				usage();
-				System.exit(2);
+				System.exit(1);
 			}
 
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%6$s%n");
@@ -66,7 +66,7 @@ public class Main {
 		if (file == null && url == null) {
 			System.err.println("A required arg is missing!");
 			usage();
-			System.exit(3);
+			System.exit(1);
 		}
 
 		Mirror2 mirror = Mirror2.archive(new File(args[0])).isStrict(strict).doRecurse(recurse).build();
@@ -89,7 +89,7 @@ public class Main {
 			} catch (IOException e) {
 				System.err.println("Problem parsing: " + file);
 				e.printStackTrace();
-				System.exit(4);
+				System.exit(2);
 			}
 		}
 

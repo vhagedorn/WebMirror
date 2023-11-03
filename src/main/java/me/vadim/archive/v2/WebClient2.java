@@ -37,6 +37,12 @@ public class WebClient2 {
 	public static final int DOWNLOAD_MODE_DOCUMENTS = 1;
 	public static final int DOWNLOAD_MODE_MEDIA = 2;
 
+	/**
+	 * Automatically appends this suffix to a "directory" URL to prevent filesystem errors.
+	 * Will still download original URLs.
+	 */
+	public static final String DIR_SUFFIX = "index.html";
+
 	private final ExecutorService io;
 	private final HttpClient client;
 
@@ -71,16 +77,21 @@ public class WebClient2 {
 	}
 
 	public WebResponse download(String link, File file, int downloadMode) {
+		boolean guess = LinkUtil.guessIsDocument(link);
+
 		switch (downloadMode) {
 			case DOWNLOAD_MODE_MEDIA:
-				if (LinkUtil.guessIsDocument(link))
+				if (guess)
 					return null;
 				break;
 			case DOWNLOAD_MODE_DOCUMENTS:
-				if (!LinkUtil.guessIsDocument(link))
+				if (!guess)
 					return null;
 				break;
 		}
+
+		if (LinkUtil.isDirLink(link)) // coerce index.html for directories
+			file = new File(file, DIR_SUFFIX);
 
 		if (file.getParentFile().mkdirs())
 			log.fine("Created directory " + file.getParentFile());
