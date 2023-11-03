@@ -27,7 +27,7 @@ public class Util {
 			// don't forward any logging to this logger to his parent
 			logger.setUseParentHandlers(false);
 			// log messages of all level
-			logger.setLevel(Level.WARNING);
+			logger.setLevel(Level.INFO);
 
 			// define the logfile
 

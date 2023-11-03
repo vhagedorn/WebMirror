@@ -1,7 +1,6 @@
 package me.vadim.archive.util;
 
 import com.google.common.net.InternetDomainName;
-import me.vadim.archive.v2.WebClient2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,8 +14,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  * @author vadim

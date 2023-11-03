@@ -2,6 +2,7 @@ package me.vadim.archive.v2;
 
 
 import me.vadim.archive.util.LinkUtil;
+import me.vadim.archive.util.StrPad;
 import me.vadim.archive.util.Util;
 
 import java.io.File;
@@ -87,9 +88,9 @@ public class Mirror2 {
 				continue;
 			}
 
-//			log.info(StrPad.rightPad(String.format("+%d ", Math.max(0, ((szC = stack.size()) + i) - szM)), 6 + 1 + 1) +
-//					 String.format(" (%d/%d) ", ++i, (szM = Math.max(szM, szC + i))) +
-//					 " " + link);
+			log.info(StrPad.rightPad(String.format("+%d ", Math.max(0, ((szC = stack.size()) + i) - szM)), 6 + 1 + 1) +
+					 String.format(" (%d/%d) ", ++i, (szM = Math.max(szM, szC + i))) +
+					 " " + link);
 
 			try {
 				if (LinkUtil.domainEquals(base.toString(), link)) {

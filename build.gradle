@@ -1,26 +1,56 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-group = 'me.vadim.archive'
-version = '0.1'
+group 'me.vadim.archive'
+version '1.0'
+
+def name_jar = project.name + '.jar'
+def main_cls = project.group + '.Main'
+def java_ver = '17'
+
+project.buildDir = project.projectDir.path + '/target'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.seleniumhq.selenium:selenium-java:4.14.0'
+    implementation 'com.google.guava:guava:32.1.3-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.jsoup:jsoup:1.16.2'
     implementation 'org.jetbrains:annotations:24.0.0'
-
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
-test {
-    useJUnitPlatform()
+task run(type: JavaExec) {
+    main = main_cls
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+shadowJar {
+    archiveFileName.set(name_jar)
+    destinationDirectory.set(project.buildDir)
+    mergeServiceFiles()
+//    minimize()
+    manifest {
+        attributes('Main-Class': main_cls)
+    }
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+jar {
+    destinationDirectory.set(project.buildDir)
+    archiveFileName.set(project.name + '-' + project.version + '-unshaded.jar')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(java_ver))
 }
