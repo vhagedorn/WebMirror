@@ -4,6 +4,20 @@ A simple website archiver written in Java.
 
 # Usage
 
+```
+Usage:
+        java -jar WebMirror.jar <destination> [OPTIONS]
+Flags:
+                         (default)
+        --strict          (true)      include subdomains during recursion check?
+        --recurse         (true)      enable recursion?
+Params:
+                         [one of]
+        --url           [required]    base URL to archive (e.g. index.html)
+        --file          [required]    file of URLs to batch archive (one link per line)
+
+```
+
 ## Downloading a site
 
 This will take a LONG time, and create a LOT of files. Make sure the destination folder is empty! (it will create a new directory if necessary)
@@ -11,7 +25,7 @@ This will take a LONG time, and create a LOT of files. Make sure the destination
 Also, **please note that this will only work for relatively simple sites**.
 Sites that make heavy use of JavaScript (e.g. Instagram) won't archive properly!
 ```bash
-java -jar WebMirror.jar "Destination folder" "Link to archive"
+java -jar WebMirror.jar "Destination folder" --url="Link to archive"
 ```
 
 This will spit out a TON of messages. Don't worry! Many sites have invalid links.
@@ -57,7 +71,7 @@ diminishing returns, so I've left the behaviour as is.
 git clone https://github.com/vhagedorn/WebMirror
 cd WebMirror
 ./gradlew build
-java -jar target/WebMirror.jar "dst" "url"
+java -jar target/WebMirror.jar "dst" --url="url"
 ```
 
 # Words

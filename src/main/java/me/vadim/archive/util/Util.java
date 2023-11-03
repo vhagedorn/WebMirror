@@ -22,6 +22,7 @@ public class Util {
 		Util.<RuntimeException>fuckUncheckedExceptions(throwable);
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static void tee(Logger logger, File file) {
 		try {
 			// don't forward any logging to this logger to his parent
@@ -30,6 +31,8 @@ public class Util {
 			logger.setLevel(Level.INFO);
 
 			// define the logfile
+
+			file.getParentFile().mkdirs();
 
 			StreamHandler sout = new ConsoleHandler();
 			sout.setFormatter(new CustomFormatter("%2$-7s %5$s%6$s%n"));

@@ -22,17 +22,31 @@ import java.util.logging.Logger;
  */
 public class Mirror2 {
 
-	private final URL base;
 	private final File dir;
 	private final WebClient2 web;
+
+	/**
+	 * domain name handling <p>
+	 * if {@code true}, then the host must match exactly, else only the top private domain must match
+	 */
+	public final boolean strict;
+
+	/**
+	 * recursion level <p>
+	 * if {@code true}, then scraping will recurse based on the {@link #strict strictness}, else no recursion will happen
+	 */
+	public final boolean recurse;
+
 	private final Logger log = Logger.getLogger(getClass().getSimpleName());
 
-	private Mirror2(URL url, File dir) {
+	private Mirror2(File dir, boolean strict, boolean recurse) {
 		Util.tee(log, new File("logs/mirror2.log"));
 
-		this.base = url;
-		this.dir  = dir;
-		this.web  = new WebClient2();
+		this.dir = dir;
+		this.web = new WebClient2();
+
+		this.strict  = strict;
+		this.recurse = recurse;
 
 		// scan file structure and generate populate links
 		// then scrape all files and add remote urls accordingly
@@ -41,9 +55,7 @@ public class Mirror2 {
 		// repeat this, downloading new remote urls as needed
 	}
 
-	public static Mirror2 archive(String url, File dir) {
-		if (url == null)
-			throw new IllegalArgumentException("url");
+	public static Mirror2Builder archive(File dir) {
 		if (dir == null)
 			throw new IllegalArgumentException("dir");
 
@@ -54,9 +66,7 @@ public class Mirror2 {
 			if (!dir.isDirectory())
 				throw new FileAlreadyExistsException("File " + dir + " is not a directory");
 
-			return new Mirror2(new URL(url), dir);
-		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException("Bad URL: " + url, e);
+			return new Mirror2Builder(dir);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Bad destination: " + dir, e);
 		}
@@ -67,8 +77,14 @@ public class Mirror2 {
 	}
 
 	@SuppressWarnings("BusyWait")
-	public void execute() {
-		Set<String>   fetched = new HashSet<>(5000);
+	public void execute(String target) {
+		URL base = LinkUtil.toURL(target);
+		if (target == null || base == null)
+			throw new IllegalArgumentException("target: " + target);
+
+		log.info(">> Archiving " + target);
+
+		Set<String>   fetched = new HashSet<>(200_000);
 		Stack<String> stack   = new Stack<>();
 
 		LinkAggregator ag = LinkAggregator.root(base.toString());
@@ -93,17 +109,24 @@ public class Mirror2 {
 					 " " + link);
 
 			try {
-				if (LinkUtil.domainEquals(base.toString(), link)) {
+				if (strict ? base.getHost().equalsIgnoreCase(url.getHost()) : LinkUtil.domainEquals(base.toString(), link)) {
 					web.download(link, toLocal(url), WebClient2.DOWNLOAD_MODE_ALL);
+
 					Set<String> links = web.scrape(link, toLocal(url));
-					stack.addAll(links); // double download is OK (caching logic will take care)
+					if (recurse) // add all to stack
+						stack.addAll(links); // double download is OK (caching logic will take care)
+					else // just download media files
+						for (String l : links)
+							if(LinkUtil.isValid(l))
+								web.download(l, toLocal(LinkUtil.toURL(l)), WebClient2.DOWNLOAD_MODE_MEDIA);
+
 					ag.pushAll(links);
 				} else {
 					web.download(link, toLocal(url), WebClient2.DOWNLOAD_MODE_MEDIA);
 					// do not push anything to the stack
 				}
 			} catch (LinkResolveException e) {
-				log.log(Level.WARNING,  e.getMessage(), e.getCause());
+				log.log(Level.WARNING, e.getMessage(), e.getCause());
 				ag.printTrace(log);
 				try {
 					Thread.sleep(TimeUnit.SECONDS.toMillis(3)); // sleep to avoid concurrent ratelimit
@@ -120,6 +143,34 @@ public class Mirror2 {
 
 	public void terminate() {
 		web.terminate();
+	}
+
+
+	public static final class Mirror2Builder {
+
+		private final File dir;
+
+		private boolean strict = true;
+		private boolean recurse = true;
+
+		private Mirror2Builder(File dir) {
+			this.dir = dir;
+		}
+
+		public Mirror2Builder isStrict(boolean strict) {
+			this.strict = strict;
+			return this;
+		}
+
+		public Mirror2Builder doRecurse(boolean recurse) {
+			this.recurse = recurse;
+			return this;
+		}
+
+		public Mirror2 build() {
+			return new Mirror2(dir, strict, recurse);
+		}
+
 	}
 
 }

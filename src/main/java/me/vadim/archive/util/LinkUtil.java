@@ -98,7 +98,7 @@ public class LinkUtil {
 		if (link == null)
 			return null;
 		try {
-			if(!link.matches("^[^:]+:.+")) // coerce no protocol to http
+			if (!link.matches("^[^:]+:.+")) // coerce no protocol to http
 				link = "http://" + link;
 			return new URL(link);
 		} catch (MalformedURLException e) {
@@ -114,7 +114,7 @@ public class LinkUtil {
 		if (link == null)
 			return null;
 		try {
-			if(!link.matches("^[^:]+:.+")) // coerce no protocol to http
+			if (!link.matches("^[^:]+:.+")) // coerce no protocol to http
 				link = "http://" + link;
 			return new URI(link);
 		} catch (URISyntaxException e) {
