@@ -2,7 +2,7 @@ package me.vadim.archive.v2;
 
 import me.vadim.archive.URIElement;
 import me.vadim.archive.util.LinkUtil;
-import me.vadim.archive.util.LocalExecutors;
+import me.vadim.archive.util.threading.LocalExecutors;
 import me.vadim.archive.util.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,6 +1,5 @@
 package me.vadim.archive.v2;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * Trace what page a link originated from.
+ *
  * @author vadim
  */
 public class LinkAggregator {
@@ -86,7 +86,8 @@ public class LinkAggregator {
 		do {
 			trace.add(node.link);
 			node = node.parent;
-		} while (node != null);
+		}
+		while (node != null);
 
 		return trace.toArray(String[]::new);
 	}
@@ -95,7 +96,7 @@ public class LinkAggregator {
 		String[] trace = trace();
 		out.println("Link " + trace[0]);
 		for (int i = 1; i < trace.length; i++)
-			out.println("\tfrom "+trace[i]);
+			 out.println("\tfrom " + trace[i]);
 		out.println();
 	}
 
@@ -103,7 +104,7 @@ public class LinkAggregator {
 		String[] trace = trace();
 		log.warning("Link " + trace[0]);
 		for (int i = 1; i < trace.length; i++)
-			 log.warning("\tfrom "+trace[i]);
+			 log.warning("\tfrom " + trace[i]);
 		log.warning("");
 	}
 

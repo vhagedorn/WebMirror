@@ -3,8 +3,8 @@ package me.vadim.archive;
 /**
  * HTML tags with URL attributes.
  *
- * @link <a href="https://stackoverflow.com/a/2725168/12344841">Adaptation</a>
  * @author vadim
+ * @link <a href="https://stackoverflow.com/a/2725168/12344841">Adaptation</a>
  */
 public enum URIElement {
 

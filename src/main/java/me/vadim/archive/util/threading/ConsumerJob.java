@@ -1,4 +1,4 @@
-package me.vadim.archive.util;
+package me.vadim.archive.util.threading;
 
 import java.util.function.Consumer;
 

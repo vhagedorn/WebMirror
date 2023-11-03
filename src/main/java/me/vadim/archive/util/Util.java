@@ -1,5 +1,7 @@
 package me.vadim.archive.util;
 
+import me.vadim.archive.util.log.CustomFormatter;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;

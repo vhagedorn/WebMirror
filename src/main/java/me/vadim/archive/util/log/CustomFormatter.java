@@ -1,4 +1,4 @@
-package me.vadim.archive.util;
+package me.vadim.archive.util.log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

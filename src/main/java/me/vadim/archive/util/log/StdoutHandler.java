@@ -1,7 +1,5 @@
 package me.vadim.archive.util.log;
 
-import me.vadim.archive.util.CustomFormatter;
-
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 

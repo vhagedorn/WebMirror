@@ -1,5 +1,6 @@
-package me.vadim.archive.util;
+package me.vadim.archive.util.threading;
 
+import me.vadim.archive.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;

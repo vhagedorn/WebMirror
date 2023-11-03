@@ -1,5 +1,5 @@
 //@formatter:off
-package me.vadim.archive.util;
+package me.vadim.archive.util.threading;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

@@ -117,7 +117,7 @@ public class Mirror2 {
 						stack.addAll(links); // double download is OK (caching logic will take care)
 					else // just download media files
 						for (String l : links)
-							if(LinkUtil.isValid(l))
+							if (LinkUtil.isValid(l))
 								web.download(l, toLocal(LinkUtil.toURL(l)), WebClient2.DOWNLOAD_MODE_MEDIA);
 
 					ag.pushAll(links);

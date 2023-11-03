@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'me.vadim.archive'
-version '1.0'
+version 'pre1.1'
 
 def name_jar = project.name + '.jar'
 def main_cls = project.group + '.Main'
